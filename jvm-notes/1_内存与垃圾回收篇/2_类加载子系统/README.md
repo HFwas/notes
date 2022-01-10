@@ -79,7 +79,12 @@ public class HelloLoader {
 
 目的在于确保Class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。
 
-主要包括四种验证，文件格式验证，元数据验证，字节码验证，符号引用验证。
+主要包括四种验证，,分别是：
+
+- 文件格式验证
+- 元数据验证
+- 字节码验证
+- 符号引用验证
 
 > 工具：Binary Viewer查看
 
@@ -323,7 +328,7 @@ public class ClassLoaderTest {
 
 得到的结果，从结果可以看出 根加载器无法直接通过代码获取，同时目前用户代码所使用的加载器为系统类加载器。同时我们通过获取String类型的加载器，发现是null，那么说明String类型是通过根加载器进行加载的，也就是说**Java的核心类库都是使用根加载器进行加载的**。
 
-```
+```java
 sun.misc.Launcher$AppClassLoader@18b4aac2
 sun.misc.Launcher$ExtClassLoader@1b6d3586
 null
@@ -337,7 +342,7 @@ null
 
 - 这个类加载使用C/C++语言实现的，嵌套在JVM内部。
 - 它用来加载Java的核心库（JAVAHOME/jre/1ib/rt.jar、resources.jar或sun.boot.class.path路径下的内容），用于提供JVM自身需要的类
-- 并不继承自ava.lang.ClassLoader，没有父加载器。
+- 并不继承自ava.lang.ClassLoader，没有父类加载器。
 - 加载扩展类和应用程序类加载器，并指定为他们的父类加载器。
 - 出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类
 
@@ -346,7 +351,7 @@ null
 - Java语言编写，由sun.misc.Launcher$ExtClassLoader实现。
 - 派生于ClassLoader类
 - 父类加载器为启动类加载器
-- 从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的jre/1ib/ext子目录（扩展目录）下加载类库。如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载。
+- 从java.ext.dirs系统属性所指定的目录中加载类库，或从JDK的安装目录的jre/lib/ext子目录（扩展目录）下加载类库。如果用户创建的JAR放在此目录下，也会自动由扩展类加载器加载。
 
 ### 应用程序类加载器（系统类加载器，AppClassLoader）
 
@@ -369,8 +374,8 @@ null
 
 用户自定义类加载器实现步骤：
 
-- 开发人员可以通过继承抽象类ava.1ang.ClassLoader类的方式，实现自己的类加载器，以满足一些特殊的需求
-- 在JDK1.2之前，在自定义类加载器时，总会去继承ClassLoader类并重写1oadClass（）方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖1oadclass（）方法，而是建议把自定义的类加载逻辑写在findclass（）方法中
+- 开发人员可以通过继承抽象类ava.lang.ClassLoader类的方式，实现自己的类加载器，以满足一些特殊的需求
+- 在JDK1.2之前，在自定义类加载器时，总会去继承ClassLoader类并重写loadClass（）方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖1oadclass（）方法，而是建议把自定义的类加载逻辑写在findclass（）方法中
 - 在编写自定义类加载器时，如果没有太过于复杂的需求，可以直接继承URIClassLoader类，这样就可以避免自己去编写findclass（）方法及其获取字节码流的方式，使自定义类加载器编写更加简洁。
 
 ### 查看根加载器所能加载的目录
@@ -402,7 +407,7 @@ public class ClassLoaderTest1 {
 
 得到的结果
 
-```
+```java
 *********启动类加载器************
 file:/D:/Java/jdk1.8.0_221/jre/lib/resources.jar
 file:/D:/Java/jdk1.8.0_221/jre/lib/rt.jar
@@ -501,7 +506,7 @@ Java虚拟机对class文件采用的是按需加载的方式，也就是说当�
 
 换句话说，在JvM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的。
 
-JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的。如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中。当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。
+**JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的**。如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中。当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。
 
 ### 类的主动使用和被动使用
 
