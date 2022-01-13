@@ -103,6 +103,150 @@ Spring功能特性如何在不同模块中组织？
 
 
 
+#  java语言特性运用
+
+各种java语法特性怎么被spring各种版本巧妙使用呢？
+
+##  java语法变化
+
+![image-20220113224851017](images/image-20220113224851017.png)
+
+## java5语法特性
+
+| 语法特性             | spring支持的版本 | 代表实现                   |
+| -------------------- | ---------------- | -------------------------- |
+| 注解 (Annotation)    | 1.2 +            | @Transactional             |
+| 泛型(enumeration)    | 1.2 +            | Propagation                |
+| For-each语法         | 3.0 +            | AbstractApplicationContext |
+| 自动装箱(autoboxing) | 3.0 +            |                            |
+| 泛型(generic)        | 3.0 +            | ApplicationL istener       |
+
+## java6语法特性
+
+| 语法特性      | spring支持的版本 | 代表实现 |
+| ------------- | ---------------- | -------- |
+| 接口@override | 4.0+             |          |
+
+## Java7 语法特性
+
+| 语法特性                | spring支持的版本 | 代表实现                    |
+| ----------------------- | ---------------- | --------------------------- |
+| diamond语法             | 5.0+             | DefaultListableBeanFactory  |
+| Try-catch-resources语法 | 5.0+             | ResourceBundleMessageSource |
+
+## java8语法特性
+
+| 语法特性   | spring支持的版本 | 代码实现                      |
+| ---------- | ---------------- | ----------------------------- |
+| lambda语法 | 5.0+             | PropertyEditorRegistrySupport |
+
+# JDK API实践
+
+spring怎么取舍java io,集合，反射，动态代理等API的使用呢？
+
+##  JDK核心API
+
+![image-20220113230237865](images/image-20220113230237865.png)
+
+## <java 5 API
+
+| API类型                  | spring支持版本 | 代表实现                   |
+| ------------------------ | -------------- | -------------------------- |
+| 反射(Reflection)         | 1.0+           | MethodMatcher              |
+| java beans               | 1.0+           | CachedIntrospectionResults |
+| 动态代理 (Dynamic Proxy) | 1.0+           | JdkDynamicAopProxy         |
+
+## java 5 API
+
+| API类型              | spring支持版本 | 代表实现                   |
+| -------------------- | -------------- | -------------------------- |
+| XML 处理(DOM,SAX...) | 1.0 +          | XmlBeanDefinitionReader    |
+| Java 管理扩展 (JMX)  | 1.2 +          | @ManagedResource           |
+| Instrumentation      | 2.0 +          | InstrumentationSavingAgent |
+| 并发框架(J.U.C)      | 3.0 +          | ThreadPoolT askScheduler   |
+| 格式化(Formatter)    | 3.0 +          | DateFormatter              |
+
+## java 6 API
+
+| API类型                      | spring支持版本 | 代表实现                          |
+| ---------------------------- | -------------- | --------------------------------- |
+| JDBC 4.0 (JSR 221)           | 1.0 +          | Jdbc Template                     |
+| Common Annotations (JSR 250) | 2.5 +          | CommonAnnotationBeanPostProcessor |
+| JAXB 2.0 (JSR 222)           | 3.0 +          | Jaxb2Marshaller                   |
+| Scripting in JVM (JSR 223)   | 4.2 +          | StandardScriptFactory             |
+| 可插拔注解处理API (JSR 269)  | 5.0 +          | @Indexed                          |
+| Java Compiler API (JSR 199)  | 5.0 +          | TestCompiler ( 单元测试)          |
+
+## java 7 API
+
+| API类型                 | spring支持版本 | 代表实现                |
+| ----------------------- | -------------- | ----------------------- |
+| Fork/Join TER (JSR 166) | 3.1 +          | ForkJoinPoolFactoryBean |
+| NIO 2 (JSR 203)         | 4.0 +          | PathResource            |
+
+## java 8 API
+
+| API类型                      | spring支持版本 | 代表实现                              |
+| ---------------------------- | -------------- | ------------------------------------- |
+| Date and Time API (JSR 310)  | 4.0 +          | Date TimeContext                      |
+| 可重复 Annotations (JSR 337) | 4.0 +          | @PropertySources                      |
+| Stream API (JSR 335)         | 4.2 +          | Stream onverter                       |
+| CompletableFuture (J.U.C)    | 4.2 +          | CompletableToL istenableFutureAdapter |
+
+# javaEE API整合
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
