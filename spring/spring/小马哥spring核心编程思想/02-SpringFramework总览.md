@@ -195,6 +195,151 @@ spring怎么取舍java io,集合，反射，动态代理等API的使用呢？
 
 # javaEE API整合
 
+## java EE API技术相关
+
+| JSP规范                   | Spring支持版本 | 代表实现                          |
+| ------------------------- | -------------- | --------------------------------- |
+| Servlet + JSP(JSR 035)    | 1.0 +          | DispatcherServlet                 |
+| JSTL(JSR 052)             | 1.0 +          | JstlView                          |
+| JavaServer Faces(JSR 127) | 1.0 +          | FacesContextUtils                 |
+| Portlet(JSR 168)          | 2.0 - 4.2      | DispatcherPortlet                 |
+| SOAP(JSR 067)             | 2.5 +          | SoapFaultException                |
+| WebServices(JSR 109)      | 2.5 +          | CommonAnnotationBeanPostProcessor |
+| WebSocket(JSR 356)        | 4.0 +          | WebSocketHandler                  |
+
+## Java EE 数据存储相关
+
+| JSR规范                        | Spring支持版本 | 代表实现              |
+| ------------------------------ | -------------- | --------------------- |
+| JDO(JSR 12)                    | 1.0 - 4.2      | JdbcTemplate          |
+| JTA(JSR 907)                   | 1.0 +          | JtaTransactionManager |
+| JPA(EJB 3.0JSR 2201J515)52.0 + | 2.0 +          | JpaTransactionManager |
+| Java Caching API(JSR 107)      | 3.2 +          | JCacheCache           |
+
+## Java EE  Bean技术相关
+
+| JSR规范                                | Spring支持版本 | 代表实现                             |
+| -------------------------------------- | -------------- | ------------------------------------ |
+| JMS(JSR 914)                           | 1.1 +          | JmsTemplate                          |
+| EJB 2.0 (JSR 19)                       | 1.0 +          | AbstractStatefulSessionBean          |
+| Dependency Injection for Java(JSR 330) | 2.5 +          | AutowiredAnnotationBeanPostProcessor |
+| Bean Validation(JSR 303)               | 3.0 +          | LocalValidatorFactoryBean            |
+
+## 资源相关
+
+- JSR官方网址:  https://jcp.org/
+- 小马哥JSR收藏:  https://github.com/mercyblitz/jsr
+- Spring官方文档根路径:  https://docs.spring.io/spring/docs/
+
+# spring编程模型
+
+![image-20220114224456541](images/image-20220114224456541.png)
+
+
+
+# spring核心价值
+
+我们能从Spring当中学到哪些经验和教训呢？
+
+- 生态系统
+  - Spring Boot
+  - Spring cloud
+  - Spring secuity
+  - Spring data
+  - ....
+- API抽象设计
+  - AOP抽象
+  - 事务抽象
+  - Environment抽象
+  - 生命周期
+- 编程基础
+  - 面向对象编程
+    - 契约接口
+  - 面向切面编程
+    - 动态代理
+    - 字节码提升
+  - 面向元编程
+    - 配置元信息
+    - 注解
+    - 配置元信息
+  - 面向模块编程
+    - Maven Artifacts
+    - OSGI Bundles
+    - Java 9 Automatic Modules
+    - Spring @Enable 注解
+  - 面向函数编程
+    - lambda
+    - reactive
+- 设计思想
+  - Object-Oriented Programming (OOP)
+  - loC / DI
+  - Domain-Driven Development (DDD)
+  - Test-Driven Development (TDD)
+  - Event- Driven Programing (EDP)
+  - Functional Programing (FP)
+- 设计模式
+  - 专属模式
+    - 前缀模式
+      - Enable模式
+      - Configurable模式
+
+    - 后缀模式
+      - 处理器模式
+        - Processor
+        - Resolver
+        - Handler
+      - 意识模式
+        - Aware
+      - 配置器模式
+        - Configuror
+      - 选择器模式
+        - ntext.a nnotation.
+  - 传统GOF 23
+    - 创建模式
+      - 抽象工厂
+      - 构建器
+      - 工厂方法
+      - 原型
+      - 单体
+    - 结构模式
+      - 适配器
+      - 桥接
+      - 组合
+      - 装饰器
+      - 门面
+      - 轻量级
+      - 代理
+    - 行为模式
+      - 责任链
+      - 命令
+      - 拦截器
+      - 迭代器
+      - 调节者
+      - 备忘
+      - 观察者
+      - 状态
+      - 策略
+      - 模版方法
+    - 
+- 用户基础
+  - Spring用户
+    - Spring framework
+    - spring boot
+    - Spring cloud 
+  - 传统用户
+    - java se
+    - java ee
+
+
+
+
+
+
+
+
+
+
+
 
 
 
