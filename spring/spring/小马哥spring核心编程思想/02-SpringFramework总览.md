@@ -293,7 +293,7 @@ spring怎么取舍java io,集合，反射，动态代理等API的使用呢？
       - 配置器模式
         - Configuror
       - 选择器模式
-        - ntext.a nnotation.
+        - org.springframework.context.annotation.ImportSelector
   - 传统GOF 23
     - 创建模式
       - 抽象工厂
@@ -329,6 +329,37 @@ spring怎么取舍java io,集合，反射，动态代理等API的使用呢？
   - 传统用户
     - java se
     - java ee
+
+# 面试题精选
+
+## 沙雕面试题
+
+- 什么是spring framework?
+
+- 
+
+## 996面试题
+
+- Spring framework有哪些核心模块？
+  - spring- core: Spring 基础API模块，如资源管理，泛型处理
+  - spring-beans: Spring Bean相关，如依赖查找，依赖注入
+  - spring- -aop : Spring AOP处理，如动态代理，AOP字节码提升
+  - spring- context :事件驱动、注解驱动，模块驱动等
+  - spring- expression: Spring 表达式语言模块
+- Spring framework的优势和不足是什么
+  - 会充斥在整个课程当中
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
