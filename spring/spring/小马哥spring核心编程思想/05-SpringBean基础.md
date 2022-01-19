@@ -27,17 +27,17 @@
 
 # BeanDefinition元信息
 
-| 属性                     | 说明                                         |
-| ------------------------ | -------------------------------------------- |
-| Class                    | Bean全类名，必须是具体类，不能用抽象类或接口 |
-| Name                     | Bean的名称或者ID                             |
-| Scope                    | Bean的作用域(如: singleton、 prototype 等)   |
-| Constructor arguments    | Bean构造器参数(用于依赖注人)                 |
-| Properties               | Bean属性设置(用于依赖注人)                   |
-| Autowiring mode          | Bean自动绑定模式(如: 通过名称byName)         |
-| Lazy initialization mode | Bean延迟初始化模式(延迟和非延迟)             |
-| Initialization method    | Bean初始化回调方法名称                       |
-| Destruction method       | Bean销毁回调方法名称                         |
+| 属性                     | 说明                                             |
+| ------------------------ | ------------------------------------------------ |
+| Class                    | Bean全类名，必须是具体类，不能用抽象类或接口     |
+| Name                     | Bean的名称或者ID                                 |
+| Scope                    | Bean的作用域(如: singleton、 prototype 等)       |
+| Constructor arguments    | Bean构造器参数(用于依赖注人)                     |
+| Properties               | Bean属性设置(用于依赖注人)                       |
+| Autowiring mode          | Bean自动绑定模式(如: 通过名称byName，byType等等) |
+| Lazy initialization mode | Bean延迟初始化模式(延迟和非延迟)                 |
+| Initialization method    | Bean初始化回调方法名称                           |
+| Destruction method       | Bean销毁回调方法名称                             |
 
 ## BeanDefinition构建
 
@@ -358,9 +358,7 @@ public class AnnotationBeanDefinitionDemo {
   - 通过AutowireCapableBeanFactory#createBean(java.lang.Class, int, boolean)
   - 通过BeanDefinitionRegistry #registerBeanDefinition ( String, BeanDefinition )
 
-## 代码测试
-
-### 通过静态工厂方法
+## 通过静态工厂方法
 
 - 配置文件
 
@@ -462,13 +460,271 @@ public class BeanInstantiationDemo {
 
 ![image-20220118003632530](images/image-20220118003632530.png)
 
+## 通过Bean工厂方法
+
+- 配置文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 静态方法实例话 bean -->
+    <bean id="user-by-static-method" class="com.hfwas.in.spring.domain.User"
+    factory-method="createUser">
+    </bean>
+
+    <!-- 实例（bean） 方法实例话bean -->
+    <bean id="user-by-instance-method" factory-bean="userFactory" factory-method="creataUser"/>
+
+    <!--  -->
+    <bean id="userFactory" class="com.hfwas.in.spring.bean.factory.DefaultUserFactory"/>
+
+</beans>
+```
+
+- 代码
+
+  - 新建接口
+
+  ```java
+  package com.hfwas.in.spring.bean.factory;
+  
+  import com.hfwas.in.spring.domain.User;
+  
+  /**
+   * @ClassName UserFactory
+   * @Description
+   *
+   * user 工厂类
+   *
+   * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+   * @Date: 9:40 下午
+   * @Version: 1.0
+   **/
+  public interface UserFactory {
+  
+      default User creataUser(){
+          return User.createUser();
+      }
+  }
+  ```
+
+  - 新建实现类
+
+  ```java
+  package com.hfwas.in.spring.bean.factory;
+  
+  /**
+   * @ClassName DefaultUserFactory
+   * @Description
+   *
+   * 默认 {@link UserFactory} 实现
+   *
+   * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+   * @Date: 9:43 下午
+   * @Version: 1.0
+   **/
+  public class DefaultUserFactory implements UserFactory{
+  }
+  ```
+
+- 测试代码
+
+```java
+package com.hfwas.in.spring.bean.definition;
+
+import com.hfwas.in.spring.domain.User;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+/**
+ * @ClassName BeanInstantiationDemo
+ * @Description
+ *
+ * bean 实例话演示
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 12:32 上午
+ * @Version: 1.0
+ **/
+public class BeanInstantiationDemo {
+
+    public static void main(String[] args) {
+        // 配置 xml 配置i文件
+        // 启动 spring 应用上下文
+        BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:/META-INF/dependency-instantiation-context.xml");
+        User bean = beanFactory.getBean("user-by-static-method", User.class);
+        User userByInstanceMethod = beanFactory.getBean("user-by-instance-method", User.class);
+        System.out.println(bean);
+        System.out.println(userByInstanceMethod);
+        System.out.println(bean == userByInstanceMethod);
+    }
+}
+```
+
+- 测试截图
+
+![image-20220118215201051](images/image-20220118215201051.png)
+
+## Servicel oaderFactoryBean
+
+- 配置文件
+
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--  -->
+    <bean id="userFactoryServiceLoader" class="org.springframework.beans.factory.serviceloader.ServiceLoaderFactoryBean">
+        <property name="serviceType" value="com.hfwas.in.spring.bean.factory.UserFactory"/>
+    </bean>
+
+</beans>
+```
+
+- 测试代码
+
+```java
+package com.hfwas.in.spring.bean.definition;
+
+import com.hfwas.in.spring.bean.factory.UserFactory;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.serviceloader.ServiceLoaderFactoryBean;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Iterator;
+import java.util.ServiceLoader;
+
+/**
+ * @ClassName SpecialBeanInstantiationDemo
+ * @Description
+ *
+ * 特殊的 bean 实例化示例
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 9:58 下午
+ * @Version: 1.0
+ **/
+public class SpecialBeanInstantiationDemo {
+
+    public static void main(String[] args) {
+        // 配置 xml 配置文件
+        // 启动 spring 应用上下文
+        BeanFactory beanFactory = new ClassPathXmlApplicationContext("classpath:/META-INF/special-bean-instantiation-context.xml");
+
+        ServiceLoader<UserFactory> serviceLoader = beanFactory.getBean("userFactoryServiceLoader", ServiceLoader.class);
+        displayServiceLoader(serviceLoader);
+
+         demoServiceLoader();
+    }
+
+    public static void demoServiceLoader() {
+        ServiceLoader<UserFactory> serviceLoader = ServiceLoader.load(UserFactory.class, Thread.currentThread().getContextClassLoader());
+        displayServiceLoader(serviceLoader);
+    }
+
+    public static void displayServiceLoader(ServiceLoader<UserFactory> serviceLoader){
+        Iterator<UserFactory> iterator = serviceLoader.iterator();
+        while (iterator.hasNext()) {
+            UserFactory next = iterator.next();
+            System.out.println(next.creataUser());
+        }
+    }
+}
+```
+
+- 测试截图
+
+![image-20220118224308239](images/image-20220118224308239.png)
 
 
 
+## AutowireCapableBeanFactory
+
+- 测试代码
+
+```java
+package com.hfwas.in.spring.bean.definition;
+
+import com.hfwas.in.spring.bean.factory.DefaultUserFactory;
+import com.hfwas.in.spring.bean.factory.UserFactory;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.serviceloader.ServiceLoaderFactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Iterator;
+import java.util.ServiceLoader;
+
+/**
+ * @ClassName SpecialBeanInstantiationDemo
+ * @Description
+ *
+ * 特殊的 bean 实例化示例
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 9:58 下午
+ * @Version: 1.0
+ **/
+public class SpecialBeanInstantiationDemo {
+
+    public static void main(String[] args) {
+        // 配置 xml 配置文件
+        // 启动 spring 应用上下文
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/META-INF/special-bean-instantiation-context.xml");
+        // 通过 ApplicationContext 获取 AutowireCapableBeanFactory
+        AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
+        ServiceLoader<UserFactory> serviceLoader = beanFactory.getBean("userFactoryServiceLoader", ServiceLoader.class);
+        displayServiceLoader(serviceLoader);
+
+//         demoServiceLoader();
+
+        // 创建 UserFactory 对象， 通过AutowireCapableBeanFactory
+        UserFactory userFactory = beanFactory.createBean(DefaultUserFactory.class);
+        System.out.println("AutowireCapableBeanFactory: " + userFactory.creataUser());
+
+    }
+
+    public static void demoServiceLoader() {
+        ServiceLoader<UserFactory> serviceLoader = ServiceLoader.load(UserFactory.class, Thread.currentThread().getContextClassLoader());
+        displayServiceLoader(serviceLoader);
+    }
+
+    public static void displayServiceLoader(ServiceLoader<UserFactory> serviceLoader){
+        Iterator<UserFactory> iterator = serviceLoader.iterator();
+        while (iterator.hasNext()) {
+            UserFactory next = iterator.next();
+            System.out.println(next.creataUser());
+        }
+    }
+}
+```
+
+- 测试截图
+
+![image-20220118224704767](images/image-20220118224704767.png)
 
 
 
 # 初始化 Spring Bean
+
+- Bean初始化(Initialization)
+- @PostConstruct标注方法
+- 实现InitializingBean 接口的afterPropertiesSet()方法
+- 自定义初始化方法
+  - XML配置: <bean init- -method="init" ... />
+  - Java注解: @Bean(initMethod=” init”)
+  - Java API: AbstractBeanDefinition#setlnitMethodName(String)
+- 思考:假设以上三种方式均在同一Bean中定义，那么这些方法的执行顺序是怎样?
+
+
 
 
 
