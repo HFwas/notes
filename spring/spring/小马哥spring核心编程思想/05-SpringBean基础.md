@@ -724,17 +724,284 @@ public class SpecialBeanInstantiationDemo {
   - Java API: AbstractBeanDefinition#setlnitMethodName(String)
 - 思考:假设以上三种方式均在同一Bean中定义，那么这些方法的执行顺序是怎样?
 
+## 分别实现
 
+### @PostConstruct标注方法
 
+- 代码修改
 
+```java
+package com.hfwas.in.spring.bean.factory;
 
+import javax.annotation.PostConstruct;
 
+/**
+ * @ClassName DefaultUserFactory
+ * @Description
+ *
+ * 默认 {@link UserFactory} 实现
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 9:43 下午
+ * @Version: 1.0
+ **/
+public class DefaultUserFactory implements UserFactory{
+
+    // 基于 @PostConstruct 注解
+    @PostConstruct
+    public void init(){
+        System.out.println("@PostConstruct UserFactory 初始化中。。。 ");
+    }
+}
+```
+
+- 测试代码
+
+```java
+package com.hfwas.in.spring.bean.definition;
+
+import com.hfwas.in.spring.bean.factory.DefaultUserFactory;
+import com.hfwas.in.spring.bean.factory.UserFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @ClassName BeanInitializationDemo
+ * @Description
+ *
+ * bean 初始化 demo
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 10:51 下午
+ * @Version: 1.0
+ **/
+@Configuration
+public class BeanInitializationDemo {
+
+    public static void main(String[] args) {
+        // 创建 BeanFactory 容器
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        // 注册 Configuration class （配置类）
+        applicationContext.register(BeanInitializationDemo.class);
+        // 启动 Spring 应用上下文
+        applicationContext.refresh();
+        // 依赖查找 UserFactory
+        UserFactory bean = applicationContext.getBean(UserFactory.class);
+        // 关闭 Spring 应用上下文
+        applicationContext.close();
+    }
+
+    @Bean
+    public UserFactory userFactory(){
+        return new DefaultUserFactory();
+    }
+}
+```
+
+- 测试截图
+
+![image-20220120231129859](images/image-20220120231129859.png)
+
+### @PostConstruct标注方法
+
+- 修改代码
+
+```java
+package com.hfwas.in.spring.bean.factory;
+
+import javax.annotation.PostConstruct;
+
+/**
+ * @ClassName DefaultUserFactory
+ * @Description
+ *
+ * 默认 {@link UserFactory} 实现
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 9:43 下午
+ * @Version: 1.0
+ **/
+public class DefaultUserFactory implements UserFactory{
+
+    // 基于 @PostConstruct 注解
+    @PostConstruct
+    public void init(){
+        System.out.println("@PostConstruct UserFactory 初始化中。。。 ");
+    }
+
+    public void initUserFactory(){
+        System.out.println("自定义初始化方法 initUserFactory（）： UserFactory初始化中。。。。" );
+    }
+}
+```
+
+- 测试方法
+
+```java
+package com.hfwas.in.spring.bean.definition;
+
+import com.hfwas.in.spring.bean.factory.DefaultUserFactory;
+import com.hfwas.in.spring.bean.factory.UserFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @ClassName BeanInitializationDemo
+ * @Description
+ *
+ * bean 初始化 demo
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 10:51 下午
+ * @Version: 1.0
+ **/
+@Configuration
+public class BeanInitializationDemo {
+
+    public static void main(String[] args) {
+        // 创建 BeanFactory 容器
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        // 注册 Configuration class （配置类）
+        applicationContext.register(BeanInitializationDemo.class);
+        // 启动 Spring 应用上下文
+        applicationContext.refresh();
+        // 依赖查找 UserFactory
+        UserFactory bean = applicationContext.getBean(UserFactory.class);
+        // 关闭 Spring 应用上下文
+        applicationContext.close();
+    }
+
+    @Bean(initMethod = "initUserFactory")
+    public UserFactory userFactory(){
+        return new DefaultUserFactory();
+    }
+}
+```
+
+- 测试截图
+
+![image-20220120231445342](images/image-20220120231445342.png)
+
+### 实现InitializingBean 接口
+
+- 代码修改
+  - 实现InitializingBean，覆盖afterPropertiesSet方法
+
+```java
+package com.hfwas.in.spring.bean.factory;
+
+import org.springframework.beans.factory.InitializingBean;
+
+import javax.annotation.PostConstruct;
+
+/**
+ * @ClassName DefaultUserFactory
+ * @Description
+ *
+ * 默认 {@link UserFactory} 实现
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 9:43 下午
+ * @Version: 1.0
+ **/
+public class DefaultUserFactory implements UserFactory, InitializingBean {
+
+    // 基于 @PostConstruct 注解
+    @PostConstruct
+    public void init(){
+        System.out.println("@PostConstruct UserFactory 初始化中。。。 ");
+    }
+
+    public void initUserFactory(){
+        System.out.println("自定义初始化方法 initUserFactory（）： UserFactory初始化中。。。。" );
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("自定义初始化方法 InitializingBean#afterPropertiesSet 初始化中。。。。" );
+    }
+}
+```
+
+- 测试代码
+  - 参考上述测试方法
+
+- 测试截图
+  - 可以看出三种方式的执行优先级，
+
+![image-20220120232022813](images/image-20220120232022813.png)
 
 # 延迟初始化 Spring Bean
 
+- Bean延迟初始化(Lazy Initialization)
+  - XML配置: <bean lazy-init= ”true”... />
+  - Java注解: @Lazy(true)
+- 思考:当某个Bean定义为延迟初始化，那么，Spring 容器返回的对象与非延迟的对象存在怎样的差异?
 
+## 测试
 
+- 测试代码
 
+```java
+package com.hfwas.in.spring.bean.definition;
+
+import com.hfwas.in.spring.bean.factory.DefaultUserFactory;
+import com.hfwas.in.spring.bean.factory.UserFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+
+/**
+ * @ClassName BeanInitializationDemo
+ * @Description
+ *
+ * bean 初始化 demo
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 10:51 下午
+ * @Version: 1.0
+ **/
+@Configuration
+public class BeanInitializationDemo {
+
+    public static void main(String[] args) {
+        // 创建 BeanFactory 容器
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        // 注册 Configuration class （配置类）
+        applicationContext.register(BeanInitializationDemo.class);
+        // 启动 Spring 应用上下文
+        applicationContext.refresh();
+        System.out.println("非延迟初始化在 sprign 应用上下文启动完成后，被初始化s");
+        // 依赖查找 UserFactory
+        UserFactory bean = applicationContext.getBean(UserFactory.class);
+        // com.hfwas.in.spring.bean.factory.DefaultUserFactory@c8e4bb0
+        System.out.println(bean);
+        // 关闭 Spring 应用上下文
+        applicationContext.close();
+    }
+
+    @Bean(initMethod = "initUserFactory")
+    @Lazy(value = false)// 非延迟初始化时开启 value= false
+    public UserFactory userFactory(){
+        return new DefaultUserFactory();
+    }
+}
+```
+
+- 测试效果
+
+  - 非延迟初始化
+
+  ![image-20220123230039039](images/image-20220123230039039.png)
+
+  - 延迟初始化
+
+  ![image-20220123230104061](images/image-20220123230104061.png)
+
+  
 
 # 销毁Spring Bean
 
