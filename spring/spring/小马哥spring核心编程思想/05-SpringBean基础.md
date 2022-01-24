@@ -1005,19 +1005,207 @@ public class BeanInitializationDemo {
 
 # 销毁Spring Bean
 
+- Bean销毁(Destroy)
+  - @PreDestroy标注方法
+  - 实现DisposableBean接口的destroy() 方法;
+  - 自定义销毁方法
+    - XML配置: <bean destroy=' destroy”... />
+    - Java注解: @Bean(destroy=" destroy")
+    - Java API: AbstractBeanDefinition#setDestroyMethodName(String)
+- 思考:假设以上三种方式均在同一Bean中定义，那么这些方法的执行顺序是怎样?
 
+## 测试验证
 
+- 修改代码
 
+  - 修改DefaultUserFactory 方法
+
+  ```java
+  package com.hfwas.in.spring.bean.factory;
+  
+  import org.springframework.beans.factory.DisposableBean;
+  import org.springframework.beans.factory.InitializingBean;
+  
+  import javax.annotation.PostConstruct;
+  import javax.annotation.PreDestroy;
+  
+  /**
+   * @ClassName DefaultUserFactory
+   * @Description
+   *
+   * 默认 {@link UserFactory} 实现
+   *
+   * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+   * @Date: 9:43 下午
+   * @Version: 1.0
+   **/
+  public class DefaultUserFactory implements UserFactory, InitializingBean, DisposableBean {
+  
+      // 基于 @PostConstruct 注解
+      @PostConstruct
+      public void init(){
+          System.out.println("@PostConstruct UserFactory 初始化中。。。 ");
+      }
+  
+      public void initUserFactory(){
+          System.out.println("自定义初始化方法 initUserFactory（）： UserFactory初始化中。。。。" );
+      }
+  
+      @Override
+      public void afterPropertiesSet() throws Exception {
+          System.out.println("自定义初始化方法 InitializingBean#afterPropertiesSet 初始化中。。。。" );
+      }
+  
+      @PreDestroy
+      public void preDestory() throws Exception {
+          System.out.println("@@PreDestroy UserFactory 销毁中。。。 ");
+      }
+  
+      @Override
+      public void destroy() throws Exception {
+          System.out.println("@@DisposableBean#destroy  UserFactory 销毁中。。。 ");
+      }
+  
+      public void doDestory() {
+          System.out.println("自定义 destroy 方法  UserFactory 销毁中。。。 ");
+      }
+  }
+  ```
+
+  - 注册doDestory
+
+  ```java
+  @Bean(initMethod = "initUserFactory", destroyMethod = "doDestory")
+      @Lazy(value = false)
+      public UserFactory userFactory(){
+          return new DefaultUserFactory();
+      }
+  ```
+
+  - 测试方法
+
+  ```java
+  package com.hfwas.in.spring.bean.definition;
+  
+  import com.hfwas.in.spring.bean.factory.DefaultUserFactory;
+  import com.hfwas.in.spring.bean.factory.UserFactory;
+  import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.context.annotation.Lazy;
+  
+  /**
+   * @ClassName BeanInitializationDemo
+   * @Description
+   *
+   * bean 初始化 demo
+   *
+   * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+   * @Date: 10:51 下午
+   * @Version: 1.0
+   **/
+  @Configuration
+  public class BeanInitializationDemo {
+  
+      public static void main(String[] args) {
+          // 创建 BeanFactory 容器
+          AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+          // 注册 Configuration class （配置类）
+          applicationContext.register(BeanInitializationDemo.class);
+          // 启动 Spring 应用上下文
+          applicationContext.refresh();
+          System.out.println("非延迟初始化在 sprign 应用上下文启动完成后，被初始化    ");
+          // 依赖查找 UserFactory
+          UserFactory bean = applicationContext.getBean(UserFactory.class);
+          // com.hfwas.in.spring.bean.factory.DefaultUserFactory@c8e4bb0
+          System.out.println(bean);
+          System.out.println("spring 上下文   准备 关闭");
+          // 关闭 Spring 应用上下文
+          applicationContext.close();
+          System.out.println("spring 上下文已关闭");
+      }
+  
+      @Bean(initMethod = "initUserFactory", destroyMethod = "doDestory")
+      @Lazy(value = false)
+      public UserFactory userFactory(){
+          return new DefaultUserFactory();
+      }
+  }
+  ```
+
+- 测试截图
+
+![image-20220124230942093](images/image-20220124230942093.png)
 
 # 垃圾回收 Spring Bean
 
+- Bean垃圾回收(GC)
+  - 关闭Spring容器(应用上下文)
+  - 执行GC.
+  - Spring Bean覆盖的finalize() 方法被回调
 
+## 代码验证
 
+- 修改代码
+  - 在DefaultUserFactory类当中添加方法
 
+```java
+@Override
+    protected void finalize() throws Throwable {
+        System.out.println("当前对象正在被回收");
+    }
+```
 
-# 面试题精选
+- 测试代码
+  - 新建BeanGarbageCollectionDemo类
 
+```java
+package com.hfwas.in.spring.bean.definition;
 
+import com.hfwas.in.spring.bean.factory.UserFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+/**
+ * @ClassName BeanGarbageCollectionDemo
+ * @Description
+ *
+ * spring bean 垃圾回收的 demo
+ *
+ * @Author <a href="hfwas1024@gmail.com">HFwas</a>
+ * @Date: 11:14 下午
+ * @Version: 1.0
+ **/
+public class BeanGarbageCollectionDemo {
+
+    public static void main(String[] args) throws InterruptedException {
+        // 创建 BeanFactory 容器
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        // 注册 Configuration class （配置类）
+        applicationContext.register(BeanInitializationDemo.class);
+        // 启动 Spring 应用上下文
+        applicationContext.refresh();
+        // 关闭 Spring 应用上下文
+        applicationContext.close();
+
+        Thread.sleep(5000L);
+        // 强制执行 gc
+        System.gc();
+        Thread.sleep(5000L);
+    }
+}
+```
+
+- 测试截图
+
+![image-20220124232212179](images/image-20220124232212179.png)
+
+#  面试题精选
+
+- 如何注册一个spring bean?
+  - 通过注册一个bean definition和外部单体对象
+- 什么是spring BeanDefinition?
+  - 
+- 
 
 
 
