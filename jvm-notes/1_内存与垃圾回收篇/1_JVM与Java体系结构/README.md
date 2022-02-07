@@ -108,7 +108,7 @@ Java平台上的多语言混合编程正成为主流，通过特定领域的语�
 - 2007年，Java平台迎来了新伙伴Clojure。
 - 2008年，oracle收购了BEA，得到了JRockit虚拟机。
 - 2009年，Twitter宣布把后台大部分程序从Ruby迁移到scala，这是Java平台的又一次大规模应用。
-- 2010年，oracle收购了sun，获得Java商标和最真价值的HotSpot虚拟机。此时，oracle拥有市场占用率最高的两款虚拟机HotSpot和JRockit，并计划在未来对它们进行整合：HotRockit
+- 2010年，oracle收购了sun，获得Java商标和最具价值的HotSpot虚拟机。此时，oracle拥有市场占用率最高的两款虚拟机HotSpot和JRockit，并计划在未来对它们进行整合：HotRockit
 - 2011年，JDK7发布。在JDK1.7u4中，正式启用了新的垃圾回收器G1。
 - 2017年，JDK9发布。将G1设置为默认Gc，替代CMS
 - 同年，IBM的J9开源，形成了现在的open J9社区

@@ -45,7 +45,6 @@
 
 - 核心特性
   - loC容器( loC Container)
-  - loC容器( loC Container)
   - Spring事件( Events )
   - 资源管理(Resources)
   - 国际化(i18n)

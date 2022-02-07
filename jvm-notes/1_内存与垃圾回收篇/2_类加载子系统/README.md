@@ -58,11 +58,14 @@ public class HelloLoader {
 
 ## 加载阶段
 
-通过一个类的全限定名获取定义此类的二进制字节流
+- 通过一个类的全限定名获取定义此类的二进制字节流
 
-将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构
 
-在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口
+- 将这个字节流所代表的静态存储结构转化为方法区的运行时数据结构
+
+
+- 在内存中生成一个代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口
+
 
 ### 加载class文件的方式
 
@@ -79,7 +82,7 @@ public class HelloLoader {
 
 目的在于确保Class文件的字节流中包含信息符合当前虚拟机要求，保证被加载类的正确性，不会危害虚拟机自身安全。
 
-主要包括四种验证，,分别是：
+主要包括四种验证，分别是：
 
 - 文件格式验证
 - 元数据验证
@@ -341,7 +344,7 @@ null
 #### 启动类加载器（引导类加载器，Bootstrap ClassLoader）
 
 - 这个类加载使用C/C++语言实现的，嵌套在JVM内部。
-- 它用来加载Java的核心库（JAVAHOME/jre/1ib/rt.jar、resources.jar或sun.boot.class.path路径下的内容），用于提供JVM自身需要的类
+- 它用来加载Java的核心库（JAVAHOME/jre/lib/rt.jar、resources.jar或sun.boot.class.path路径下的内容），用于提供JVM自身需要的类
 - 并不继承自ava.lang.ClassLoader，没有父类加载器。
 - 加载扩展类和应用程序类加载器，并指定为他们的父类加载器。
 - 出于安全考虑，Bootstrap启动类加载器只加载包名为java、javax、sun等开头的类
@@ -355,12 +358,12 @@ null
 
 ### 应用程序类加载器（系统类加载器，AppClassLoader）
 
-- javI语言编写，由sun.misc.LaunchersAppClassLoader实现
+- java语言编写，由sun.misc.LaunchersAppClassLoader实现
 - 派生于ClassLoader类
 - 父类加载器为扩展类加载器
 - 它负责加载环境变量classpath或系统属性java.class.path指定路径下的类库
-- 该类加载是程序中默认的类加载器，一般来说，Java应用的类都是由它来完成加载
-- 通过classLoader#getSystemclassLoader（）方法可以获取到该类加载器
+- 该类加载器是程序中默认的类加载器，一般来说，Java应用的类都是由它来完成加载
+- 通过ClassLoader#getSystemclassLoader（）方法可以获取到该类加载器
 
 ### 用户自定义类加载器
 
@@ -375,12 +378,12 @@ null
 用户自定义类加载器实现步骤：
 
 - 开发人员可以通过继承抽象类ava.lang.ClassLoader类的方式，实现自己的类加载器，以满足一些特殊的需求
-- 在JDK1.2之前，在自定义类加载器时，总会去继承ClassLoader类并重写loadClass（）方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖1oadclass（）方法，而是建议把自定义的类加载逻辑写在findclass（）方法中
+- 在JDK1.2之前，在自定义类加载器时，总会去继承ClassLoader类并重写loadClass（）方法，从而实现自定义的类加载类，但是在JDK1.2之后已不再建议用户去覆盖loadclass（）方法，而是建议把自定义的类加载逻辑写在findclass（）方法中
 - 在编写自定义类加载器时，如果没有太过于复杂的需求，可以直接继承URIClassLoader类，这样就可以避免自己去编写findclass（）方法及其获取字节码流的方式，使自定义类加载器编写更加简洁。
 
 ### 查看根加载器所能加载的目录
 
-刚刚我们通过概念了解到了，根加载器只能够加载 java /lib目录下的class，我们通过下面代码验证一下
+刚刚我们通过概念了解到了，根加载器只能够加载 java/lib目录下的class，我们通过下面代码验证一下
 
 ```java
 /**
@@ -504,13 +507,13 @@ Java虚拟机对class文件采用的是按需加载的方式，也就是说当�
 - 类的完整类名必须一致，包括包名。
 - 加载这个类的ClassLoader（指ClassLoader实例对象）必须相同。
 
-换句话说，在JvM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的。
+换句话说，在JVM中，即使这两个类对象（class对象）来源同一个Class文件，被同一个虚拟机所加载，但只要加载它们的ClassLoader实例对象不同，那么这两个类对象也是不相等的。
 
 **JVM必须知道一个类型是由启动加载器加载的还是由用户类加载器加载的**。如果一个类型是由用户类加载器加载的，那么JVM会将这个类加载器的一个引用作为类型信息的一部分保存在方法区中。当解析一个类型到另一个类型的引用的时候，JVM需要保证这两个类型的类加载器是相同的。
 
 ### 类的主动使用和被动使用
 
-Java程序对类的使用方式分为：王动使用和被动使用。
+Java程序对类的使用方式分为：主动使用和被动使用。
 主动使用，又分为七种情况：
 
 - 创建类的实例
