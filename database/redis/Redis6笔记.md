@@ -609,17 +609,11 @@ Apache Cassandra是一款免费的开源NosQL数据库,其设计目的在于管�
 
 - 
 
-
-
-
-
 ## 6.2.HyperLogLog
 
 
 
 ## 6.3.Geospatial
-
-
 
 
 
@@ -635,29 +629,58 @@ Apache Cassandra是一款免费的开源NosQL数据库,其设计目的在于管�
 
 # 9.Redis与SpringBoot整合
 
+  
 
+# 10.redis事务-锁机制-秒杀
 
-# 10.Redis6持久化之RDB 
+## 10.1.redis的事务定义
 
+- Redis 事务是一个单独的隔离操作:事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中,不会被其他客户端发送来的命令请求所打断
+- Redis事务的主要作用就是串联多个命令防止别的命令插队。
 
-
-# 11.Redis6持久化之AOF
-
-
-
-# 12.Redis6的主从复制
-
-
-
-# 13.Redis6集群
+## 10.2. Multi, Exec, discard
 
 
 
-# 14.Redis应用问题解决
+## 10.3.事务的错误处理
+
+## 10.4.为什么要做成事务
 
 
 
-# 15.Redis6新功能
+
+
+# 10.6.Redis事务三特性
+
+
+
+
+
+# 11.redis-事务-秒杀案例
+
+
+
+# 12.Redis6持久化之RDB 
+
+
+
+# 13.Redis6持久化之AOF
+
+
+
+# 14.Redis6的主从复制
+
+
+
+# 15.Redis6集群
+
+
+
+# 16.Redis应用问题解决
+
+
+
+# 17.Redis6新功能
 
 
 
