@@ -57,3 +57,17 @@
 - InputStream资源（InputStreamResource）
 - Byte数组（ByteArrayResource）
 
+# 资源加载相关类图
+
+![image-20220316230944973](images/image-20220316230944973.png)
+
+上图分析：
+
+- ResourceLoader，定义资源加载器，主要应用于根据给定的资源文件地址，返回对应的 Resource 。
+- DefaultResourceLoader是ResourceLoader的默认实现
+- FileSystemResourceLoader从文件系统加载资源
+
+# 参考资料
+
+- 《spring源码深度解析》
+- 知识星球宇道源码《死磕Spring》
