@@ -67,6 +67,14 @@
 - DefaultResourceLoader是ResourceLoader的默认实现
 - FileSystemResourceLoader从文件系统加载资源
 
+# Bean信息相关类图
+
+![image-20220318005449546](images/image-20220318005449546.png)
+
+
+
+
+
 # 参考资料
 
 - 《spring源码深度解析》
