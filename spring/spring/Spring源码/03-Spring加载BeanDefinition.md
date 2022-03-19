@@ -1,4 +1,9 @@
-# 03-Spring加载bean
+# 03-Spring加载BeanDefinition
+
+GitHub地址：
+
+- https://github.com/HFwas
+- 主要是[ notes](https://github.com/HFwas/notes)仓库下`Spring`文件夹和[spring-framework](https://github.com/HFwas/spring-framework)仓库的`hfwas`分支
 
 # 调试环境
 
@@ -12,7 +17,7 @@
 
 # 加载BeanDefinition
 
-- 真正加载BeanDefinition的逻辑是在org.springframework.beans.factory.xml.XmlBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.Resource)当中
+- 真正加载BeanDefinition的逻辑是在`org.springframework.beans.factory.xml.XmlBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.Resource)`当中
 
 ```java
 /**
@@ -112,8 +117,8 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 	}
 ```
 
-- 根据传入的xml文件，获取Document 实例`doLoadDocument(inputSource, resource);`
-- 根据获取的Document实例，解析配置 文件当中bean实例个数
+- #1.1.根据传入的xml文件，获取Document 实例，需要先将xml文件转换成java代码能够解析的对象，Java代码当中Document就是解析xml文件得到的对象，下一步解析内容都是以Document为基础
+- #1.2.根据获取的Document实例，解析配置 文件当中bean实例个数。代码内部会执行真正的解析BeanDefinition
 
 # doLoadDocument
 
@@ -140,6 +145,8 @@ protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 - #this.errorHandler获取错误处理器
 - #getValidationModeForResource(resource)获取资源的验证模式
 - #isNamespaceAware()是否设置Namespace
+
+
 
 # 参考资料
 
