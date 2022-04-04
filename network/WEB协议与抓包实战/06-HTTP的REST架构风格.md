@@ -50,16 +50,81 @@
   - 提升性能
 - 分层、缓存、无状态、客户端服务器 Layered-Client-Cache-Stateless-Server,LC$SS
 
+### LC$SS架构
 
+![image-20220403235123587](images/image-20220403235123587.png)
 
+# 分层风格Hierarchical Styles(二)
 
+- 远程会话Remote Session, RS
+  - CS变体,服务器保存 Application state应用状态
+  - 可伸缩性、可见性差
+- 远程数据访问Remote Data Access, RDA
+  - CS变体, Application state应用状态同时分布在客户端与服务器
+  - 巨大的数据集有可能通过选代而减少
+  - 简单性、可伸缩性差
 
+#  分层风格Hierarchical Styles
 
+![image-20220403235419652](images/image-20220403235419652.png)
 
 # 移动代码风格 Mobile Code Styles
 
+- 虚拟机Virtual Machine, VM
+  - 分离指令与实现
+- 远程求值Remote Evaluation, REV,
+  - 基于CS的VM,将代码发送至服务器执行
+- 按需代码Code on Demand, COD
+  - 服务器在响应中发回处理代码,在客户端执行
+  - 优秀的可扩展性和可配置性,提升用户可察觉性能和网络效率
+- 分层、按需代码、缓存、无状态、客户端服务器Layered-Code-on-Demand-Client-Cache-Stateless-Server, LCODC$SS
+  - LC$SS+COD
+- 移动代理Mobile Agent, MA
+  - 相当于REV+COD
 
+代码与执行过程或者执行结果分离,例如Javascript
 
+![image-20220403235749058](images/image-20220403235749058.png)
 
+##  统一接口的LC$SS+COD
+
+![image-20220403235713716](images/image-20220403235713716.png)
 
 # 点对点风格 Peer-to-Peer Styles
+
+- Event-based Integration , EBI:
+  - 基于事件集成系统,如由类似Kafka这样的消息系统+分发订阅来消除耦合
+  - 优秀的可重用性、可扩展性、可进化性
+  - 缺乏可理解性
+  - 由于消息广播等因素造成的消息风暴,可伸缩性差
+- Chiron-2,C2参见论文《A Component- and Message-Based Architectural Style for GUI Software》
+  - 相当于EBI+LCS,控制了消息的方向
+- Distributed Objects, DO
+  - 组件结对交互
+- Brokered Distributed Objects , BDO
+  - 引入名字解析组件来简化DO,例如 CORBA
+
+
+
+![image-20220403235959869](images/image-20220403235959869.png)
+
+
+
+
+
+# 风格演化
+
+![image-20220404000018919](images/image-20220404000018919.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
