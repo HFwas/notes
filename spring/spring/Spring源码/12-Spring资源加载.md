@@ -117,7 +117,11 @@ public interface Resource extends InputStreamSource {
 
 ## AbstractResource抽象类
 
-- AbstractResource提供了Resource接口方法的默认实现
+截图如下：
+
+![image-20220514205706483](images/image-20220514205706483.png)
+
+从上图可以看出，AbstractResource提供了Resource接口方法的默认实现
 
 ```java
 package org.springframework.core.io;
@@ -341,7 +345,10 @@ public abstract class AbstractResource implements Resource {
 
 上图分析：
 
-- ResourceLoader，定义资源加载器，主要应用于根据给定的资源文件地址，返回对应的 Resource 。
+- ResourceLoader接口
+  - 通过指定的路径文件地址，返回指定资源的资源对象Resource。
+  - 获取当前类的类加载器
+
 - DefaultResourceLoader是ResourceLoader的默认实现，对于不同的文件提供了不同的实现
 - FileSystemResourceLoader从文件系统加载资源
 
@@ -378,7 +385,7 @@ public interface ResourceLoader {
 }
 ```
 
-## DefaultResourceLoader
+## DefaultResourceLoader类
 
 ```java
 package org.springframework.core.io;

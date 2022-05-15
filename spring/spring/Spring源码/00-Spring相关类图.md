@@ -18,11 +18,11 @@ GitHub地址：
 - SingletonBeanRegistry：定义对单例的注册及获取
 - BeanFactory：定义获取bean及bean的各种属性。
 - DefaultSingletonBeanRegistry：对接口SingletonBeanRegistry各函数的实现。
-- HierarchicalBeanFactory：继承BeanFactory，也就是在BeanFactory定义的功能的基础上增加了对parentFactory的支持。
+- HierarchicalBeanFactory：继承BeanFactory，也就是在BeanFactory定义的功能的基础上增加了对parentFactory的支持。主要增加了可以获取父子容器的功能
 - BeanDefinitionRegistry：定义对BeanDefinition的各种增删改操作。
 - FactoryBeanRegistrySupport：在DefaultSingletonBeanRegistry基础上增加了对FactoryBean的特殊处理功能。
 - ConfigurableBeanFactory：提供配置Factory的各种方法。
-- ListableBeanFactory：根据各种条件获取bean的配置清单。
+- ListableBeanFactory：根据各种条件获取bean的配置清单。主要是一些涉及BeanDefinition，be an的功能
 - AbstractBeanFactory：综合FactoryBeanRegistrySupport和ConfigurableBeanFactory的功能。
 - AutowireCapableBeanFactory：提供创建bean、自动注入、初始化以及应用bean的后处理器。
 - AbstractAutowireCapableBeanFactory：综合AbstractBeanFactory并对接口AutowireCapable BeanFactory进行实现
@@ -55,7 +55,7 @@ GitHub地址：
 
 上图分析：
 
-- 不同的资源文件都有相应的Resource实现
+- 不同的资源文件都有相应的Resource实现,Spring提供了对于不同资源的抽象。
 - 文件（FileSystemResource）
 - Classpath资源（ClassPathResource）
 - URL资源（UrlResource）
@@ -85,3 +85,4 @@ GitHub地址：
 
 - 《spring源码深度解析》
 - 知识星球宇道源码《死磕Spring》
+- 《Spring技术内幕》
