@@ -277,7 +277,7 @@ SourceFile: "StackStruTest.java"
 
 ## 总结
 
-由于跨平台性的设计，Java的指令都是根据栈来设计的。不同平台CPU架构不同，所以不能设计为基于寄存器的。
+由于跨平台性的设计，Java的指令都是根据栈来设计的。不同平台CPU架构不同，所以不能设计为基于寄存器的。 
 
 优点:
 
@@ -317,7 +317,7 @@ Java虚拟机的启动是通过引导类加载器（bootstrap class loader）创
 - 程序正常执行结束
 
 - 程序在执行过程中遇到了异常或错误而异常终止
-- 由于操作系统用现错误而导致Java虚拟机进程终止
+- 由于操作系统出现错误而导致Java虚拟机进程终止
 - 某线程调用Runtime类或system类的exit方法，或Runtime类的halt方法，并且Java安全管理器也允许这次exit或halt操作。
 - 除此之外，JNI（Java Native Interface）规范描述了用JNI Invocation API来加载或卸载 Java虚拟机时，Java虚拟机的退出情况。
 
@@ -384,7 +384,7 @@ HotSpot历史
 
 oracle表达了整合两大优秀虚拟机的工作，大致在JDK8中完成。整合的方式是在HotSpot的基础上，移植JRockit的优秀特性。
 
-高斯林：目前就职于谷歌，研究人工智能和水下机器人
+高斯林：目前就职于谷歌，研究人工智能和水下机器人。
 
 ### IBM的J9
 
@@ -411,12 +411,12 @@ KVM简单、轻量、高度可移植，面向更低端的设备上还维持自�
 
 ### Azul VM
 
-前面三大“高性能Java虚拟机”使用在通用硬件平台上这里Azu1VW和BEALiquid VM是与特定硬件平台绑定、软硬件配合的专有虚拟机
+前面三大“高性能Java虚拟机”使用在通用硬件平台上这里AzulVW和BEALiquid VM是与特定硬件平台绑定、软硬件配合的专有虚拟机
 - 高性能Java虚拟机中的战斗机。
 
-Azul VM是Azu1Systems公司在HotSpot基础上进行大量改进，运行于Azul Systems公司的专有硬件Vega系统上的ava虚拟机。
+Azul VM是AzulSystems公司在HotSpot基础上进行大量改进，运行于Azul Systems公司的专有硬件Vega系统上的ava虚拟机。
 
-每个Azu1VM实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内实现可控的GC时间的垃圾收集器、专有硬件优化的线程调度等优秀特性。
+每个AzulVM实例都可以管理至少数十个CPU和数百GB内存的硬件资源，并提供在巨大内存范围内实现可控的GC时间的垃圾收集器、专有硬件优化的线程调度等优秀特性。
 
 2010年，AzulSystems公司开始从硬件转向软件，发布了自己的zing JVM，可以在通用x86平台上提供接近于Vega系统的特性。
 
@@ -430,11 +430,11 @@ Liquid VM不需要操作系统的支持，或者说它自己本身实现了一�
 
 随着JRockit虚拟机终止开发，Liquid vM项目也停止了。
 
-### Apache Marmony
+### Apache Harmony
 
 Apache也曾经推出过与JDK1.5和JDK1.6兼容的Java运行平台Apache Harmony。
 
-它是IElf和Inte1联合开发的开源JVM，受到同样开源的openJDK的压制，Sun坚决不让Harmony获得JCP认证，最终于2011年退役，IBM转而参与OpenJDK
+它是IElf和Intel联合开发的开源JVM，受到同样开源的openJDK的压制，Sun坚决不让Harmony获得JCP认证，最终于2011年退役，IBM转而参与OpenJDK
 
 虽然目前并没有Apache Harmony被大规模商用的案例，但是它的Java类库代码吸纳进了Android SDK。
 
@@ -460,9 +460,9 @@ Apache也曾经推出过与JDK1.5和JDK1.6兼容的Java运行平台Apache Harmon
 - PMU hardware的Java profiling tool和诊断协助功能
 - 针对大数据场景的ZenGc 
 
-taobao vm应用在阿里产品上性能高，硬件严重依赖inte1的cpu，损失了兼容性，但提高了性能
+taobao vm应用在阿里产品上性能高，硬件严重依赖intel的cpu，损失了兼容性，但提高了性能
 
-目前已经在淘宝、天猫上线，把oracle官方JvM版本全部替换了。
+目前已经在淘宝、天猫上线，把oracle官方JVM版本全部替换了。
 
 ### Dalvik VM
 
