@@ -7,8 +7,11 @@
 详细示例
 
 - 设置代理
-  - 配置http代理，执行`git config --global http.proxy http://127.0.0.1:108`
-  - 配置https代理，执行`git config --global httpsproxy http://127.0.0.1:108`
+  - 配置http代理，执行`git config --global http.proxy http://127.0.0.1:7890`
+  - 配置https代理，执行`git config --global https.proxy http://127.0.0.1:7890`
+  - 或者
+    - git config --global https.https://github.com.proxy https://127.0.0.1:7890
+    - git config --global http.https://github.com.proxy https://127.0.0.1:7890
 - 取消代理
   - 取消http代理，执行`git config --global --unset http.proxy`
   - 取消https代理，执行`git config --global --unset https.proxy`
